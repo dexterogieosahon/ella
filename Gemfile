@@ -28,6 +28,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   # Use faker to create random data for factories
   gem 'faker'
+
+  gem 'rspec-collection_matchers'
 end
 
 group :development do
