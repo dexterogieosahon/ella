@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Event, type: :model do
   describe '#timeslots' do
     let(:event) { create(:event, :with_timeslots, timeslots_count: 3) }

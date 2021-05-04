@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :event do
-    name { "EventX" }
+    name { Faker::Job.title }
     date { Date.today }
 
     transient do

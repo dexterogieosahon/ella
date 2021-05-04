@@ -58,6 +58,75 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
+-- Name: meeting_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.meeting_users (
+    id bigint NOT NULL,
+    meeting_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    status character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: meeting_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.meeting_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: meeting_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.meeting_users_id_seq OWNED BY public.meeting_users.id;
+
+
+--
+-- Name: meetings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.meetings (
+    id bigint NOT NULL,
+    timeslot_id bigint NOT NULL,
+    name character varying,
+    uuid uuid NOT NULL,
+    starts_at timestamp without time zone NOT NULL,
+    ends_at timestamp without time zone NOT NULL,
+    location character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: meetings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.meetings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: meetings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.meetings_id_seq OWNED BY public.meetings.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -141,6 +210,20 @@ ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.event
 
 
 --
+-- Name: meeting_users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meeting_users ALTER COLUMN id SET DEFAULT nextval('public.meeting_users_id_seq'::regclass);
+
+
+--
+-- Name: meetings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meetings ALTER COLUMN id SET DEFAULT nextval('public.meetings_id_seq'::regclass);
+
+
+--
 -- Name: timeslots id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -171,6 +254,22 @@ ALTER TABLE ONLY public.events
 
 
 --
+-- Name: meeting_users meeting_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meeting_users
+    ADD CONSTRAINT meeting_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: meetings meetings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meetings
+    ADD CONSTRAINT meetings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -195,10 +294,62 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: index_meeting_users_on_meeting_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_meeting_users_on_meeting_id ON public.meeting_users USING btree (meeting_id);
+
+
+--
+-- Name: index_meeting_users_on_meeting_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_meeting_users_on_meeting_id_and_user_id ON public.meeting_users USING btree (meeting_id, user_id);
+
+
+--
+-- Name: index_meeting_users_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_meeting_users_on_user_id ON public.meeting_users USING btree (user_id);
+
+
+--
+-- Name: index_meetings_on_timeslot_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_meetings_on_timeslot_id ON public.meetings USING btree (timeslot_id);
+
+
+--
 -- Name: index_timeslots_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_timeslots_on_event_id ON public.timeslots USING btree (event_id);
+
+
+--
+-- Name: meetings fk_rails_120c78efd0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meetings
+    ADD CONSTRAINT fk_rails_120c78efd0 FOREIGN KEY (timeslot_id) REFERENCES public.timeslots(id);
+
+
+--
+-- Name: meeting_users fk_rails_26a253a7ac; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meeting_users
+    ADD CONSTRAINT fk_rails_26a253a7ac FOREIGN KEY (meeting_id) REFERENCES public.meetings(id);
+
+
+--
+-- Name: meeting_users fk_rails_3a845d68d0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meeting_users
+    ADD CONSTRAINT fk_rails_3a845d68d0 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -218,6 +369,8 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20210503053713'),
 ('20210503055531'),
-('20210503055639');
+('20210503055639'),
+('20210503100435'),
+('20210503103533');
 
 
