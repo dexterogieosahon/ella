@@ -33,3 +33,17 @@ Create 1 endpoint which returns data in a way that a frontend can show:
 - If you would have one week to implement some of those solutions, which would you pick and why?
   - Remember: This task is quite abstract, and there's no right answer.
 
+
+
+## Task 2 (Answer):
+- With the endpoint you created, list out what kind of problems you ran into and foresee in the future.
+  I ran into the following problems:
+    ### Composing the data needed for the endpoints. 
+  
+  Solutions:
+    ### I would add a caching layer for the data retrievals as they can be large and frequent and not changing that much
+    ### I would take into use, Service Object to better compose the data being retrieved
+    ### I would add API Documentation either with OpenAPI 3 or similar tool
+
+  If I had one week to implement these, I would refactor the code with Service Objects for cleaner and more maintable code
+  and add the caching layer for better through put of the service.
