@@ -54,7 +54,7 @@ RSpec.describe "Events", type: :request do
           end
 
           it "shows all the time slots with the current user\'s active meetings" do
-            get(event_timeslot_path(event.id, timeslot.id), headers: { 'Authorization': current_user.id })
+            get(user_event_timeslot_path(event.id, timeslot.id), headers: { 'Authorization': current_user.id })
             res = JSON.parse(response.body)
             expect(res['data']['relationships']['meetings']['data']).to have(11).items
           end

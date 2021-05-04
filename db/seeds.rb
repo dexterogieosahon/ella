@@ -18,3 +18,7 @@ end
 Meeting.all.each do |meeting|
   MeetingUser.invite(user, meeting)
 end
+
+Timeslot.all[0..7].each do |timeslot|
+  TimeslotUser.bookmark(user, timeslot, 'reserved')
+end

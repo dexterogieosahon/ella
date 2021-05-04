@@ -136,6 +136,39 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: timeslot_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.timeslot_users (
+    id bigint NOT NULL,
+    timeslot_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    status character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: timeslot_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.timeslot_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: timeslot_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.timeslot_users_id_seq OWNED BY public.timeslot_users.id;
+
+
+--
 -- Name: timeslots; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -224,6 +257,13 @@ ALTER TABLE ONLY public.meetings ALTER COLUMN id SET DEFAULT nextval('public.mee
 
 
 --
+-- Name: timeslot_users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.timeslot_users ALTER COLUMN id SET DEFAULT nextval('public.timeslot_users_id_seq'::regclass);
+
+
+--
 -- Name: timeslots id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -278,6 +318,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: timeslot_users timeslot_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.timeslot_users
+    ADD CONSTRAINT timeslot_users_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: timeslots timeslots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -322,10 +370,39 @@ CREATE INDEX index_meetings_on_timeslot_id ON public.meetings USING btree (times
 
 
 --
+-- Name: index_timeslot_users_on_timeslot_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_timeslot_users_on_timeslot_id ON public.timeslot_users USING btree (timeslot_id);
+
+
+--
+-- Name: index_timeslot_users_on_timeslot_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_timeslot_users_on_timeslot_id_and_user_id ON public.timeslot_users USING btree (timeslot_id, user_id);
+
+
+--
+-- Name: index_timeslot_users_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_timeslot_users_on_user_id ON public.timeslot_users USING btree (user_id);
+
+
+--
 -- Name: index_timeslots_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_timeslots_on_event_id ON public.timeslots USING btree (event_id);
+
+
+--
+-- Name: timeslot_users fk_rails_0f0505b668; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.timeslot_users
+    ADD CONSTRAINT fk_rails_0f0505b668 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -361,6 +438,14 @@ ALTER TABLE ONLY public.timeslots
 
 
 --
+-- Name: timeslot_users fk_rails_efa75c4fd9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.timeslot_users
+    ADD CONSTRAINT fk_rails_efa75c4fd9 FOREIGN KEY (timeslot_id) REFERENCES public.timeslots(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -371,6 +456,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210503055531'),
 ('20210503055639'),
 ('20210503100435'),
-('20210503103533');
+('20210503103533'),
+('20210504083428');
 
 
